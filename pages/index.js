@@ -1,82 +1,144 @@
 import Head from 'next/head'
+import Axios from 'axios'
+import { useState, useEffect } from 'react'
+import Box from '../components/Box'
 
-export default function Home() {
+export default function Home({ countries }) {
+  // const [countries, setCountries] = useState([])
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const response = await Axios.get('https://restcountries.eu/rest/v2/all')
+  //       console.log(response.data)
+  //       setCountries(response.data)
+  //       console.log(countries)
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  //   fetchData()
+  //   // return () => {
+  //   //   cleanup
+  //   // }
+  // }, [])
+
+  // useEffect(() => {
+  //   if (countries.length != 0) console.log(countries)
+  // }, [countries])
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <div className='flex flex-col items-center justify-center min-h-screen py-2'>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>All Countries List</title>
+        <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
-
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+      <main className='flex flex-col items-center justify-center w-full flex-1 px-20'>
+        <div className='text-3xl font-bold text-left m-4'>Countries</div>
+        {countries.map((country, index) => (
+          <Box key={index} index={index} country={country}></Box>
+        ))}
       </main>
 
-      <footer className="flex items-center justify-center w-full h-24 border-t">
+      <footer className='flex items-center justify-center w-full h-24 border-t'>
         <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          className='flex items-center justify-center'
+          href='https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app'
+          target='_blank'
+          rel='noopener noreferrer'
         >
           Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
+          <img src='/vercel.svg' alt='Vercel Logo' className='h-4 ml-2' />
         </a>
       </footer>
     </div>
   )
+}
+
+export async function getStaticProps(context) {
+  // try {
+  const response = await Axios.get('https://restcountries.eu/rest/v2/all')
+  console.log(response.data)
+  // setCountries(response.data)
+  // console.log(countries)
+  // } catch (error) {
+  //   console.log(error)
+  // }
+  return {
+    props: { countries: response.data }, // will be passed to the page component as props
+  }
+}
+
+{
+  /* <Box
+  country={{
+    name: 'Colombia',
+    topLevelDomain: ['.co'],
+    alpha2Code: 'CO',
+    alpha3Code: 'COL',
+    callingCodes: ['57'],
+    capital: 'Bogotá',
+    altSpellings: [
+      'CO',
+      'Republic of Colombia',
+      'República de Colombia',
+    ],
+    region: 'Americas',
+    subregion: 'South America',
+    population: 48759958,
+    latlng: [4.0, -72.0],
+    demonym: 'Colombian',
+    area: 1141748.0,
+    gini: 55.9,
+    timezones: ['UTC-05:00'],
+    borders: ['BRA', 'ECU', 'PAN', 'PER', 'VEN'],
+    nativeName: 'Colombia',
+    numericCode: '170',
+    currencies: [
+      {
+        code: 'COP',
+        name: 'Colombian peso',
+        symbol: '$',
+      },
+    ],
+    languages: [
+      {
+        iso639_1: 'es',
+        iso639_2: 'spa',
+        name: 'Spanish',
+        nativeName: 'Español',
+      },
+    ],
+    translations: {
+      de: 'Kolumbien',
+      es: 'Colombia',
+      fr: 'Colombie',
+      ja: 'コロンビア',
+      it: 'Colombia',
+      br: 'Colômbia',
+      pt: 'Colômbia',
+    },
+    flag: 'https://restcountries.eu/data/col.svg',
+    regionalBlocs: [
+      {
+        acronym: 'PA',
+        name: 'Pacific Alliance',
+        otherAcronyms: [],
+        otherNames: ['Alianza del Pacífico'],
+      },
+      {
+        acronym: 'USAN',
+        name: 'Union of South American Nations',
+        otherAcronyms: ['UNASUR', 'UNASUL', 'UZAN'],
+        otherNames: [
+          'Unión de Naciones Suramericanas',
+          'União de Nações Sul-Americanas',
+          'Unie van Zuid-Amerikaanse Naties',
+          'South American Union',
+        ],
+      },
+    ],
+    cioc: 'COL',
+  }}
+></Box> */
 }
